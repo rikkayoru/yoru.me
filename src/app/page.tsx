@@ -39,7 +39,7 @@ const Home = () => {
               </li>
               <li>
                 <Link
-                  href={'https://github.com/sakurahentai'}
+                  href={'https://github.com/rikkayoru'}
                   title="Github~"
                   target="_blank"
                   className={anchorCls}

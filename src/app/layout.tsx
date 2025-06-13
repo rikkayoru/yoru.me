@@ -23,7 +23,7 @@ export const metadata = {
   authors: [
     {
       name: 'Derek',
-      url: 'https://github.com/SakuraHentai'
+      url: 'https://github.com/rikkayoru'
     }
   ]
 } satisfies Metadata

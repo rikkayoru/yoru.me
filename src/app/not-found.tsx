@@ -22,14 +22,14 @@ const Page404: NextPage = () => {
     <>
       <Game />
       <div
-        className={cn('fixed bottom-6 right-8 text-gray-500', fipps.className)}
+        className={cn('fixed right-8 bottom-6 text-gray-500', fipps.className)}
       >
         <Link href="/blog" title="去看看前端~">
           BLOG
         </Link>
         <span className="mx-4">/</span>
         <Link
-          href="https://github.com/sakurahentai"
+          href="https://github.com/rikkayoru"
           title="Github~"
           target="_blank"
         >
