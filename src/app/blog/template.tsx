@@ -31,7 +31,7 @@ const BlogLayout: FC<{ children: ReactNode }> = ({ children }) => {
             <h3 className="my-8 text-[2em] font-bold text-white text-shadow-[2px_2px_3px_#555]">
               <a
                 className="transition-colors duration-300"
-                href="https://github.com/SakuraHentai"
+                href="https://github.com/rikkayoru"
                 target="_blank"
                 rel="noreferrer"
               >
