@@ -103,9 +103,7 @@ const ImageViewer: FC<ImageViewerProps> = ({ src, onClose }) => {
       className={cn([
         'fixed inset-0 z-[999] flex cursor-zoom-out justify-center overscroll-contain bg-black/30',
         'will-change-[opacity]',
-        (naturalDimensions?.height ?? 0) > window.innerHeight
-          ? 'items-start'
-          : 'items-center'
+        'items-center'
       ])}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -134,14 +132,10 @@ const ImageViewer: FC<ImageViewerProps> = ({ src, onClose }) => {
         naturalDimensions && (
           <motion.img
             src={src}
-            style={{
-              width: naturalDimensions.width,
-              height: naturalDimensions.height
-            }}
-            className="relative z-10 m-8 max-w-none object-contain will-change-transform"
-            initial={{ scale: 0 }}
-            animate={{ scale: currentScale }}
-            exit={{ scale: 0 }}
+            className="relative z-10 m-8 h-auto max-w-none object-contain will-change-[width]"
+            initial={{ width: 0 }}
+            animate={{ width: currentScale * naturalDimensions.width }}
+            exit={{ width: 0 }}
             transition={{ type: 'spring', stiffness: 310, damping: 25 }}
             dragMomentum={false}
             drag
