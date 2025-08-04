@@ -5,7 +5,7 @@ import Link from 'next/link'
 
 import { useMemo } from 'react'
 
-import BgCanvas from '@/components/bg-canvas'
+import { StartScreen } from '@/components/home/start-screen'
 import { cn } from '@/utils'
 
 const pFont = Preahvihear({
@@ -28,7 +28,8 @@ const Home = () => {
   return (
     <>
       <div className="h-dvh bg-[#ffe500]">
-        <BgCanvas />
+        {/* <BgCanvas /> */}
+        <StartScreen />
         <header className="fixed top-4 right-8">
           <nav className="flex h-16 items-center rounded-[64px] bg-[rgba(22,101,52,.5)] px-8 py-2">
             <ul className="flex items-center gap-4">
