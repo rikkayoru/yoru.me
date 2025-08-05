@@ -4,9 +4,18 @@ import { useRef } from 'react'
 
 import bg from '@/assets/home/bg.webp'
 
-import { GrayscaleFilter, PixelateFilter } from 'pixi-filters'
+import { GlitchFilter, GrayscaleFilter, PixelateFilter } from 'pixi-filters'
 import { Application, Assets, Sprite } from 'pixi.js'
-import { fromEvent, startWith, throttleTime } from 'rxjs'
+import {
+  concat,
+  delay,
+  fromEvent,
+  interval,
+  mergeMap,
+  of,
+  startWith,
+  throttleTime
+} from 'rxjs'
 import useSWRImmutable from 'swr/immutable'
 
 export const Screen = () => {
@@ -15,11 +24,8 @@ export const Screen = () => {
     if (!canvasRef.current) {
       return
     }
-    // Create a new application
     const app = new Application()
 
-    // Initialize the application
-    console.log('?')
     await app.init({
       width: window.innerWidth,
       height: window.innerHeight,
@@ -27,16 +33,27 @@ export const Screen = () => {
       resizeTo: window,
       canvas: canvasRef.current
     })
-    console.log('??')
 
     // Load the bg
     const texture = await Assets.load(bg.src)
     const bgSprite = new Sprite(texture)
+    app.stage.addChild(bgSprite)
+
     bgSprite.anchor.set(0.5)
     bgSprite.alpha = 0
 
-    const filters = [new PixelateFilter(4), new GrayscaleFilter()]
-    bgSprite.filters = filters
+    // Prepare filters
+    const pixelateFilter = new PixelateFilter(4)
+    const grayscaleFilter = new GrayscaleFilter()
+    const glitchFilter = new GlitchFilter({
+      offset: 20,
+      fillMode: 2 // Loop
+    })
+    const filters = [
+      pixelateFilter,
+      //  grayscaleFilter,
+      glitchFilter
+    ]
 
     // Ensure the sprite cover the whole screen
     const originalAspectRatio = texture.width / texture.height
@@ -53,21 +70,38 @@ export const Screen = () => {
       bgSprite.y = app.screen.height / 2
     }
 
-    app.stage.addChild(bgSprite)
-
     // Listen for animate update
     app.ticker.add((time) => {
       if (bgSprite.alpha < 1) {
         bgSprite.alpha += 0.1 * time.deltaTime
       }
+      glitchFilter.slices = Math.floor(Math.random() * 6)
     })
 
+    // Glitch effect
+    interval(3e3)
+      .pipe(
+        mergeMap(() => {
+          return concat(of(true), of(false).pipe(delay(6e2)))
+        }),
+        startWith(false)
+      )
+      .subscribe((enabled) => {
+        // `enabled` not work now, ref: https://github.com/pixijs/pixijs/issues/11333
+        if (enabled) {
+          bgSprite.filters = filters
+        } else {
+          bgSprite.filters = filters.filter((f) => f !== glitchFilter)
+        }
+      })
+
+    // Handle resize
     fromEvent(window, 'resize')
       .pipe(
-        startWith(true),
         throttleTime(100, undefined, {
           trailing: true
-        })
+        }),
+        startWith(true)
       )
       .subscribe(() => {
         responsiveSprite()
