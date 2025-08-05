@@ -21,6 +21,7 @@ const Home = () => {
       'py-2 w-24 block text-center',
       'font-[Preahvihear,_sans-serif]',
       'bg-[rgba(92,101,22,.3)]',
+      'transition-transform hover:-translate-y-0.5 active:scale-95',
       pFont.className
     ])
   }, [])

@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@bprogress/next": "^3.2.12",
+    "@emotion/react": "^11.14.0",
     "@mdx-js/react": "^3.1.0",
     "@react-three/drei": "^10.0.7",
     "@react-three/fiber": "^9.1.2",

@@ -1,11 +1,9 @@
 'use client'
 
-import { useRef } from 'react'
-
-import bg from '@/assets/home/bg.webp'
+import { type FC, useRef } from 'react'
 
 import { GlitchFilter, GrayscaleFilter, PixelateFilter } from 'pixi-filters'
-import { Application, Assets, Sprite } from 'pixi.js'
+import { Application, Sprite, type Texture } from 'pixi.js'
 import {
   concat,
   delay,
@@ -18,7 +16,10 @@ import {
 } from 'rxjs'
 import useSWRImmutable from 'swr/immutable'
 
-export const Screen = () => {
+type Props = {
+  texture: Texture
+}
+export const Screen: FC<Props> = ({ texture }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const { isLoading } = useSWRImmutable('start-screen/bg', async () => {
     if (!canvasRef.current) {
@@ -35,7 +36,6 @@ export const Screen = () => {
     })
 
     // Load the bg
-    const texture = await Assets.load(bg.src)
     const bgSprite = new Sprite(texture)
     app.stage.addChild(bgSprite)
 
