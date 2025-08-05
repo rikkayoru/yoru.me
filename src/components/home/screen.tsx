@@ -2,7 +2,7 @@
 
 import { type FC, useRef } from 'react'
 
-import { GlitchFilter, GrayscaleFilter, PixelateFilter } from 'pixi-filters'
+import { GlitchFilter, PixelateFilter } from 'pixi-filters'
 import { Application, Sprite, type Texture } from 'pixi.js'
 import {
   concat,
@@ -21,7 +21,7 @@ type Props = {
 }
 export const Screen: FC<Props> = ({ texture }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const { isLoading } = useSWRImmutable('start-screen/bg', async () => {
+  useSWRImmutable('start-screen/bg', async () => {
     if (!canvasRef.current) {
       return
     }
@@ -43,10 +43,10 @@ export const Screen: FC<Props> = ({ texture }) => {
     bgSprite.alpha = 0
 
     // Prepare filters
-    const pixelateFilter = new PixelateFilter(4)
-    const grayscaleFilter = new GrayscaleFilter()
+    const pixelateFilter = new PixelateFilter(3)
+    // const grayscaleFilter = new GrayscaleFilter()
     const glitchFilter = new GlitchFilter({
-      offset: 20,
+      offset: 36,
       fillMode: 2 // Loop
     })
     const filters = [
@@ -99,12 +99,13 @@ export const Screen: FC<Props> = ({ texture }) => {
     fromEvent(window, 'resize')
       .pipe(
         throttleTime(100, undefined, {
-          trailing: true
+          trailing: true,
+          leading: true
         }),
         startWith(true)
       )
       .subscribe(() => {
-        responsiveSprite()
+        requestAnimationFrame(responsiveSprite)
       })
 
     return app

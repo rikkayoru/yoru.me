@@ -29,7 +29,6 @@ const Home = () => {
   return (
     <>
       <div className="h-dvh bg-[#ffe500]">
-        {/* <BgCanvas /> */}
         <StartScreen />
         <header className="fixed top-4 right-8">
           <nav className="flex h-16 items-center rounded-[64px] bg-[rgba(22,101,52,.5)] px-8 py-2">
