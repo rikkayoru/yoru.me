@@ -1,9 +1,12 @@
+import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
 import type { FC } from 'react'
 
 import { globby } from 'globby'
 import { basename } from 'node:path'
+
+export const dynamic = 'force-static'
 
 export const generateStaticParams = async () => {
   const posts = await globby('src/posts/*.mdx')
@@ -19,7 +22,7 @@ type PageProps = {
     path: string
   }>
 }
-export const generateMetadata = async (props: PageProps) => {
+export const generateMetadata = async (props: PageProps): Promise<Metadata> => {
   const { path } = await props.params
 
   try {
