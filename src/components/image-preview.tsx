@@ -132,7 +132,7 @@ const ImageViewer: FC<ImageViewerProps> = ({ src, onClose }) => {
         naturalDimensions && (
           <motion.img
             src={src}
-            className="relative z-10 m-8 h-auto max-w-none object-contain will-change-[width]"
+            className="relative z-10 m-8 h-auto max-w-none bg-gray-50 object-contain will-change-[width]"
             initial={{ width: 0 }}
             animate={{ width: currentScale * naturalDimensions.width }}
             exit={{ width: 0 }}

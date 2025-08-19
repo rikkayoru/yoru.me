@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
 import { cn } from '@/utils'
@@ -6,12 +7,39 @@ import { Pagination } from './components/pagination'
 import parseQueryPath from './utils/parse-query-path'
 import { getAllPosts } from './utils/posts'
 
+export const generateStaticParams = async () => {
+  const data = await getAllPosts()
+
+  const tags = new Set<string>()
+
+  data.posts.forEach((post) => {
+    post.metadata.tags.forEach((tag) => {
+      tags.add(tag)
+    })
+  })
+
+  const params = tags.values().map((tag) => {
+    return {
+      slugs: ['tag', tag]
+    }
+  })
+
+  return [
+    // /blog
+    {
+      slugs: []
+    },
+    // /blog/tag
+    ...Array.from(params)
+  ]
+}
+
 type PageProps = {
   params: Promise<{
     slugs: string[] | undefined
   }>
 }
-export const generateMetadata = async (props: PageProps) => {
+export const generateMetadata = async (props: PageProps): Promise<Metadata> => {
   const { slugs } = await props.params
   const parsed = parseQueryPath(slugs)
 
@@ -22,7 +50,10 @@ export const generateMetadata = async (props: PageProps) => {
     }
   } catch (error) {
     console.error(error)
-    return {}
+    return {
+      title: 'Blog',
+      description: '一些关于前端的文字'
+    }
   }
 }
 
